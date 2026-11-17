@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <footer className="footer">
-      <p>Bore &amp; Barrel, 123 Range Road</p>
+      <p>PartiturLib — Progressive Web App Arsip &amp; Perpustakaan Partitur Musik</p>
     </footer>
   )
 }

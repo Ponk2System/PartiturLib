@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * BORE & BARREL — TACTICAL HARDWARE CATALOG & ARMORY PWA II
+ * PARTITURLIB — PERPUSTAKAAN & ARSIP PARTITUR MUSIK PWA
  * Design tokens & core typography
  * --------------------------------------------------------------------------- */
 
@@ -819,7 +819,7 @@
 }
 
 /* ---------------------------------------------------------------------------
- * Form Pages (CreateGunPage, EditGunPage)
+ * Form Pages (CreateScorePage, EditScorePage)
  * --------------------------------------------------------------------------- */
 .form-page {
   padding: 32px 0 64px;
@@ -1517,4 +1517,117 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ---------------------------------------------------------------------------
+ * Pagination Controls
+ * --------------------------------------------------------------------------- */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 36px 0 24px;
+  padding: 16px;
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 12px;
+}
+
+.pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink, #1a202c);
+  background: var(--paper, #f7fafc);
+  border: 1px solid var(--line, #cbd5e0);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: var(--brass, #d4a373);
+  color: #ffffff;
+  border-color: var(--brass, #d4a373);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-numbers {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pagination-num {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink, #1a202c);
+  background: var(--paper, #f7fafc);
+  border: 1px solid var(--line, #cbd5e0);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-num:hover:not(.pagination-num--active) {
+  border-color: var(--brass, #d4a373);
+  color: var(--brass, #d4a373);
+}
+
+.pagination-num--active {
+  background: var(--ink, #1a202c);
+  color: #ffffff;
+  border-color: var(--ink, #1a202c);
+}
+
+.pagination-info {
+  width: 100%;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted, #718096);
+  margin-top: 4px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Suspense Page Loader
+ * --------------------------------------------------------------------------- */
+.suspense-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 40vh;
+  color: var(--muted, #718096);
+  font-size: 0.95rem;
+}
+
+/* ---------------------------------------------------------------------------
+ * Share Button Feedback States
+ * --------------------------------------------------------------------------- */
+.card-act-btn--success {
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+.btn--success {
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
 }

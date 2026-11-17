@@ -4,8 +4,10 @@
 // this browser session.  No authentication is involved.
 // ---------------------------------------------------------------------------
 
-const USER_IDENTIFIER_KEY = 'bore_barrel_user_id'
-const USER_PROFILE_KEY = 'bore_barrel_user_profile'
+const USER_IDENTIFIER_KEY = 'partiturlib_user_id'
+const USER_PROFILE_KEY = 'partiturlib_user_profile'
+const LEGACY_IDENTIFIER_KEY = 'bore_barrel_user_id'
+const LEGACY_PROFILE_KEY = 'bore_barrel_user_profile'
 
 /**
  * Check if a string is a valid UUID
@@ -35,7 +37,7 @@ const generateUUID = () => {
  */
 export const getUserIdentifier = () => {
   try {
-    let userId = localStorage.getItem(USER_IDENTIFIER_KEY)
+    let userId = localStorage.getItem(USER_IDENTIFIER_KEY) || localStorage.getItem(LEGACY_IDENTIFIER_KEY)
     if (!userId || !isValidUUID(userId)) {
       userId = generateUUID()
       localStorage.setItem(USER_IDENTIFIER_KEY, userId)
@@ -53,13 +55,13 @@ export const getUserIdentifier = () => {
  */
 export const getUserProfile = () => {
   try {
-    const raw = localStorage.getItem(USER_PROFILE_KEY)
+    const raw = localStorage.getItem(USER_PROFILE_KEY) || localStorage.getItem(LEGACY_PROFILE_KEY)
     if (raw) return JSON.parse(raw)
   } catch {
     /* corrupted data — fall through to default */
   }
   return {
-    username: 'Shooter',
+    username: 'Musisi',
     avatar: null,
     bio: '',
     userId: getUserIdentifier(),

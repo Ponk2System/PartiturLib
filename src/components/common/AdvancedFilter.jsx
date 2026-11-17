@@ -1,17 +1,7 @@
 import { Search, SlidersHorizontal } from 'lucide-react'
 
 /**
- * Search bar + category pills + sort dropdown.
- *
- * @param {Object}   props
- * @param {string}   props.search        — current search query
- * @param {Function} props.onSearch      — (value) => void
- * @param {string[]} props.categories    — e.g. ['All','Pistol','Rifle','Shotgun']
- * @param {string}   props.activeCategory
- * @param {Function} props.onCategory    — (value) => void
- * @param {string}   props.sortKey       — 'name' | 'price'
- * @param {string}   props.sortOrder     — 'asc' | 'desc'
- * @param {Function} props.onSort        — ({ key, order }) => void
+ * Search bar + category pills + sort dropdown for scores.
  */
 export default function AdvancedFilter({
   search,
@@ -30,11 +20,11 @@ export default function AdvancedFilter({
         <Search size={16} className="adv-filter__icon" />
         <input
           type="search"
-          placeholder="Search products…"
+          placeholder="Cari judul partitur, komposer, atau arranger…"
           value={search}
           onChange={(e) => onSearch(e.target.value)}
           className="adv-filter__input"
-          aria-label="Search products"
+          aria-label="Cari partitur"
         />
       </div>
 
@@ -61,13 +51,13 @@ export default function AdvancedFilter({
             const [key, order] = e.target.value.split('_')
             onSort({ key, order })
           }}
-          aria-label="Sort products"
+          aria-label="Urutkan partitur"
           className="adv-filter__select"
         >
-          <option value="name_asc">Name A → Z</option>
-          <option value="name_desc">Name Z → A</option>
-          <option value="price_asc">Price Low → High</option>
-          <option value="price_desc">Price High → Low</option>
+          <option value="name_asc">Judul A → Z</option>
+          <option value="name_desc">Judul Z → A</option>
+          <option value="price_asc">Tahun Cipta: Terlama → Terbaru</option>
+          <option value="price_desc">Tahun Cipta: Terbaru → Terlama</option>
         </select>
       </div>
     </div>

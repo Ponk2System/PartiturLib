@@ -2,18 +2,19 @@ import { Heart } from 'lucide-react'
 import { useIsFavorited } from '../../hooks/useFavorites'
 
 /**
- * A toggleable heart button.  Works with both server-backed and
- * localStorage-only favourites.
+ * A toggleable heart button for scores / repertoire.
  *
  * @param {Object}   props
- * @param {string}   props.gunId  — product UUID (or local id)
- * @param {Function} [props.onToggle] — optional callback after toggle
+ * @param {string|number} [props.scoreId]  — score ID or title
+ * @param {string|number} [props.gunId]    — compatibility alias
+ * @param {Function} [props.onToggle]      — optional callback after toggle
  */
-export default function FavoriteButton({ gunId, onToggle }) {
-  const { isFavorited, loading, toggleFavorite } = useIsFavorited(gunId)
+export default function FavoriteButton({ scoreId, gunId, onToggle }) {
+  const targetId = scoreId ?? gunId
+  const { isFavorited, loading, toggleFavorite } = useIsFavorited(targetId)
 
   const handleClick = async (e) => {
-    e.stopPropagation()          // don't bubble into card click
+    e.stopPropagation()
     const result = await toggleFavorite()
     if (result && onToggle) onToggle(result)
   }
@@ -24,8 +25,8 @@ export default function FavoriteButton({ gunId, onToggle }) {
       className={`fav-btn${isFavorited ? ' fav-btn--active' : ''}`}
       onClick={handleClick}
       disabled={loading}
-      aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
-      title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+      aria-label={isFavorited ? 'Hapus dari repertoar' : 'Simpan ke repertoar'}
+      title={isFavorited ? 'Hapus dari repertoar' : 'Simpan ke repertoar'}
     >
       <Heart
         size={18}

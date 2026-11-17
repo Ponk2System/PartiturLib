@@ -1,90 +1,89 @@
 import { useMemo } from 'react'
-import { Heart, Loader, AlertCircle, ArrowRight } from 'lucide-react'
+import { Heart, Loader, AlertCircle, ArrowRight, Music } from 'lucide-react'
 import { useFavorites } from '../hooks/useFavorites'
-import { useGuns } from '../hooks/useGuns'
-import GUNS_LOCAL from '../data/guns'
-import GunCard from '../components/gun/GunCard'
+import { useScores } from '../hooks/useScores'
+import SCORES_FALLBACK from '../data/scores'
+import ScoreCard from '../components/score/ScoreCard'
 
 /**
- * FavoritesPage — Displays user's shortlisted / favorited weapons.
- * Supports dual-mode (server API + localStorage fallback).
+ * FavoritesPage — Displays user's shortlisted sheet music / repertoire.
  */
-export default function FavoritesPage({ onSelectGun, onNavigateCatalog }) {
+export default function FavoritesPage({ onSelectScore, onSelectGun, onNavigateCatalog }) {
+  const onSelect = onSelectScore || onSelectGun
   const { favorites, loading: favLoading, error: favError, refetch } = useFavorites()
-  const { guns: apiGuns } = useGuns({ limit: 100 })
+  const { scores: apiScores } = useScores({ limit: 100 })
 
-  // All known guns catalog for fallback item lookup
-  const allKnownGuns = useMemo(() => {
+  // All known scores for lookup
+  const allKnownScores = useMemo(() => {
     const map = new Map()
-    // Local catalog
-    GUNS_LOCAL.forEach((g, idx) => {
-      const id = g.id || `local-${idx}`
-      const enriched = { ...g, id }
+    SCORES_FALLBACK.forEach((s, idx) => {
+      const id = s.id || `local-${idx}`
+      const enriched = { ...s, id }
       map.set(id, enriched)
       map.set(String(id), enriched)
-      if (g.name) map.set(g.name, enriched)
+      if (s.title) map.set(s.title, enriched)
     })
-    // API catalog
-    apiGuns.forEach((g) => {
-      if (g.id !== undefined && g.id !== null) {
-        map.set(g.id, g)
-        map.set(String(g.id), g)
+    apiScores.forEach((s) => {
+      if (s.id !== undefined && s.id !== null) {
+        map.set(s.id, s)
+        map.set(String(s.id), s)
       }
-      if (g.name) map.set(g.name, g)
+      if (s.title) map.set(s.title, s)
     })
     return map
-  }, [apiGuns])
+  }, [apiScores])
 
-  // Resolve favorited products
   const favoriteItems = useMemo(() => {
-    // 1. If backend returned full objects in favorites array:
     const resolved = []
     const seen = new Set()
 
     favorites.forEach((fav) => {
-      const id = fav.id || fav.recipe_id || fav.gun_id
-      const match = allKnownGuns.get(id) || allKnownGuns.get(fav.name) || (fav.name ? fav : null)
-      if (match && !seen.has(match.id || match.name)) {
-        seen.add(match.id || match.name)
+      const id = fav.score_id || fav.id || fav.product_id || fav.recipe_id
+      const match = allKnownScores.get(id) || allKnownScores.get(fav.title) || allKnownScores.get(fav.name) || (fav.title ? fav : null)
+      if (match && !seen.has(match.id || match.title)) {
+        seen.add(match.id || match.title)
         resolved.push(match)
       } else if (id && !seen.has(id)) {
         seen.add(id)
         resolved.push({
           id,
-          name: fav.name || 'Hardware item',
-          type: fav.category || 'Hardware',
-          image_url: fav.image_url || '/guns/pistol.svg',
-          price: fav.cook_time || 0,
+          title: fav.title || fav.name || 'Partitur Musik',
+          composer: fav.composer || 'Komposer',
+          category: fav.category || 'Orchestra',
+          cover_image_url: fav.cover_image_url || fav.image_url || 'https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&w=800&q=80',
+          file_url: fav.file_url || '',
         })
       }
     })
 
     return resolved
-  }, [favorites, allKnownGuns])
+  }, [favorites, allKnownScores])
 
   const isLoading = favLoading && favoriteItems.length === 0
 
   return (
     <div className="fav-page">
       <section className="masthead">
-        <h1 className="display">Saved Shortlist</h1>
+        <h1 className="display" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Music size={32} color="var(--brass)" /> Repertoar Partitur Saya
+        </h1>
         <p className="lede">
-          Weapons and equipment marked for procurement. Persisted with your armory profile.
+          Daftar karya musik dan partitur yang Anda simpan untuk latihan, persiapan konser, atau studi pribadi.
         </p>
       </section>
 
       <section className="fav-content">
         <div className="list-head">
-          <h2>Armory Favorites</h2>
+          <h2>Partitur Tersimpan</h2>
           <span className="count">
-            {favoriteItems.length} weapon{favoriteItems.length !== 1 ? 's' : ''} saved
+            {favoriteItems.length} partitur
           </span>
         </div>
 
         {isLoading && (
           <div className="state-box">
             <Loader size={28} className="spin" />
-            <p>Loading your shortlist…</p>
+            <p>Memuat daftar repertoar Anda…</p>
           </div>
         )}
 
@@ -93,26 +92,23 @@ export default function FavoritesPage({ onSelectGun, onNavigateCatalog }) {
             <AlertCircle size={28} />
             <p>{favError}</p>
             <button type="button" className="btn btn--outline" onClick={refetch}>
-              Retry Connection
+              Coba Lagi
             </button>
           </div>
         )}
 
         {!isLoading && favoriteItems.length === 0 && !favError && (
           <div className="state-box">
-            <Heart size={36} stroke="var(--steel)" />
-            <h3>No hardware favorited yet</h3>
-            <p className="lede">
-              Explore the armory catalog and click the heart icon on any piece to save it here.
-            </p>
+            <Heart size={36} color="var(--brass)" style={{ opacity: 0.6 }} />
+            <p>Belum ada partitur dalam repertoar favorit Anda.</p>
             {onNavigateCatalog && (
               <button
                 type="button"
                 className="btn btn--primary"
                 onClick={onNavigateCatalog}
-                style={{ marginTop: '16px' }}
+                style={{ marginTop: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
-                Browse Catalog <ArrowRight size={16} />
+                Jelajahi Katalog Partitur <ArrowRight size={16} />
               </button>
             )}
           </div>
@@ -120,11 +116,11 @@ export default function FavoritesPage({ onSelectGun, onNavigateCatalog }) {
 
         {favoriteItems.length > 0 && (
           <ul className="stock">
-            {favoriteItems.map((gun) => (
-              <GunCard
-                key={gun.id || gun.name}
-                gun={gun}
-                onSelect={onSelectGun}
+            {favoriteItems.map((item) => (
+              <ScoreCard
+                key={item.id || item.title}
+                score={item}
+                onSelect={onSelect}
               />
             ))}
           </ul>

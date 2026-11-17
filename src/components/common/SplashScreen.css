@@ -1,6 +1,6 @@
 /* ==========================================================================
-   Bore & Barrel — Splash Screen Animation
-   Gunshop Asli Ngawi Signature Intro
+   PartiturLib — Splash Screen Animation
+   Intro Animation with Centered Musical Score Branding
    ========================================================================== */
 
 .splash-overlay {
@@ -10,12 +10,16 @@
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 42%, #160e08 0%, #08090b 43%, #030406 78%);
+  background: radial-gradient(ellipse at 50% 50%, #1f170e 0%, #0d0f14 55%, #040507 100%);
   isolation: isolate;
   z-index: 99999;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s;
   cursor: pointer;
   user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .splash-overlay--fading {
@@ -24,250 +28,161 @@
   pointer-events: none;
 }
 
-.splash-mark {
+/* Ambient glow in center */
+.splash-ambient-glow {
   position: absolute;
+  top: 50%;
   left: 50%;
-  top: 29%;
-  width: min(90vw, 58vh, 650px);
-  aspect-ratio: 1;
-  object-fit: contain;
-  transform: translate(-50%, 0) translateX(-100vw) scale(0.94);
-  opacity: 0;
-  animation: splash-rush 2s cubic-bezier(0.15, 0.8, 0.18, 1) 0.05s forwards,
-             splash-glow 1.5s ease-out 2.55s forwards;
-  mix-blend-mode: normal;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, rgba(217, 119, 6, 0.06) 50%, transparent 70%);
   pointer-events: none;
+  filter: blur(35px);
+  animation: splash-pulse 3s ease-in-out infinite alternate;
 }
 
-.splash-trail {
-  position: absolute;
-  left: -50%;
-  top: 49%;
-  width: 58vw;
-  height: 4px;
-  background: linear-gradient(90deg, transparent, #ff6500, #ffb329, transparent);
-  filter: blur(4px);
-  opacity: 0;
-  animation: splash-trail 1.5s ease-out 0.1s forwards;
-  pointer-events: none;
-}
-
-.splash-flash {
-  position: absolute;
-  inset: 0;
-  background: #fff0c4;
-  opacity: 0;
-  pointer-events: none;
-  animation: splash-flash 0.23s ease-out 2.45s;
-}
-
-.splash-cracks {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  pointer-events: none;
-  animation: splash-crack 0.65s ease-out 2.48s forwards;
-  filter: drop-shadow(0 0 2px rgba(230, 240, 255, 0.28));
-}
-
-.splash-cracks path {
-  fill: none;
-  stroke: #cbd7e3;
-  stroke-width: 1.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0.82;
-}
-
-.splash-overlay.hit {
-  animation: splash-shake 0.35s linear;
-}
-
-.splash-brand {
-  position: absolute;
-  top: 81%;
-  left: 0;
-  width: 100%;
+/* Central container for Emblem & Brand */
+.splash-center {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  opacity: 0;
-  transform: translateY(12px);
-  animation: splash-brandIn 0.9s ease-out 3.8s forwards;
+  z-index: 2;
+  animation: splash-centerIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Center Emblem */
+.splash-emblem {
+  width: 106px;
+  height: 106px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 50px rgba(245, 158, 11, 0.5), 0 10px 30px rgba(0, 0, 0, 0.6);
+  margin-bottom: 24px;
+  animation: splash-float 3s ease-in-out infinite alternate;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+}
+
+.splash-emblem svg {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35));
+}
+
+/* Brand Text */
+.splash-brand {
+  text-align: center;
   color: #f6f3ec;
-  pointer-events: none;
 }
 
 .splash-brand-name {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(28px, 5.4vw, 43px);
-  letter-spacing: 0.035em;
-  font-weight: 700;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+  font-family: 'Arial Narrow', 'Franklin Gothic Medium', 'Roboto Condensed', Georgia, serif;
+  font-size: clamp(34px, 6vw, 50px);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+  margin: 0;
+}
+
+.splash-brand-name span {
+  color: #fbbf24;
 }
 
 .splash-brand-sub {
-  margin-top: 12px;
-  font-size: 11px;
+  margin-top: 10px;
+  font-size: 12px;
   letter-spacing: 0.28em;
-  color: #ff8a28;
+  color: #fbbf24;
   font-weight: 600;
   text-transform: uppercase;
 }
 
-.splash-brand::after {
-  content: '';
-  display: block;
-  width: 76px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #ff7b12, transparent);
-  margin: 16px auto 0;
+.splash-divider {
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #fbbf24, transparent);
+  margin: 18px auto 0;
 }
 
 /* Skip / Enter Action */
 .splash-skip-btn {
   position: absolute;
-  bottom: 24px;
-  right: 24px;
+  bottom: 28px;
+  right: 28px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: rgba(18, 14, 11, 0.65);
-  border: 1px solid rgba(255, 138, 40, 0.35);
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(22, 17, 12, 0.75);
+  border: 1px solid rgba(251, 191, 36, 0.4);
   border-radius: 9999px;
-  color: #f6f3ec;
-  font-size: 12px;
-  font-weight: 500;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
   cursor: pointer;
   z-index: 10;
-  opacity: 0;
-  animation: splash-skipIn 0.6s ease-out 1.5s forwards;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 .splash-skip-btn:hover {
-  background: rgba(255, 117, 0, 0.2);
-  border-color: #ff8a28;
+  background: rgba(245, 158, 11, 0.25);
+  border-color: #fbbf24;
   color: #ffffff;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
 }
 
 .splash-hint {
   position: absolute;
-  bottom: 28px;
-  left: 24px;
-  font-size: 11px;
-  color: rgba(246, 243, 236, 0.35);
+  bottom: 32px;
+  left: 28px;
+  font-size: 12px;
+  color: rgba(246, 243, 236, 0.4);
   letter-spacing: 0.05em;
-  opacity: 0;
-  animation: splash-skipIn 0.6s ease-out 2.5s forwards;
   pointer-events: none;
 }
 
 /* Animations */
-@keyframes splash-rush {
+@keyframes splash-centerIn {
   0% {
     opacity: 0;
-    left: -20%;
-    transform: translate(-50%, 0) scale(0.94);
-  }
-  58% {
-    opacity: 1;
-    left: 53%;
-    transform: translate(-50%, 0) scale(1.025);
-  }
-  78% {
-    left: 49%;
-    transform: translate(-50%, 0) scale(0.99);
+    transform: scale(0.88) translateY(16px);
   }
   100% {
     opacity: 1;
-    left: 50%;
-    transform: translate(-50%, 0) scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 
-@keyframes splash-trail {
+@keyframes splash-float {
   0% {
-    opacity: 0;
-    left: -35%;
-  }
-  22% {
-    opacity: 0.95;
-  }
-  100% {
-    opacity: 0;
-    left: 48%;
-  }
-}
-
-@keyframes splash-flash {
-  0% {
-    opacity: 0;
-  }
-  25% {
-    opacity: 0.75;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes splash-crack {
-  0% {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  45% {
-    opacity: 0.9;
-  }
-  100% {
-    opacity: 0.82;
-    transform: scale(1);
-  }
-}
-
-@keyframes splash-shake {
-  0%, 100% {
-    transform: translate(0);
-  }
-  20% {
-    transform: translate(-5px, 2px);
-  }
-  45% {
-    transform: translate(4px, -2px);
-  }
-  70% {
-    transform: translate(-2px, 1px);
-  }
-}
-
-@keyframes splash-glow {
-  0% {
-    filter: drop-shadow(0 0 0 rgba(255, 117, 0, 0));
-  }
-  45% {
-    filter: drop-shadow(0 0 24px rgba(255, 117, 0, 0.5));
-  }
-  100% {
-    filter: drop-shadow(0 0 10px rgba(255, 117, 0, 0.2));
-  }
-}
-
-@keyframes splash-brandIn {
-  to {
-    opacity: 1;
     transform: translateY(0);
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.4), 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+  100% {
+    transform: translateY(-6px);
+    box-shadow: 0 0 60px rgba(245, 158, 11, 0.6), 0 14px 32px rgba(0, 0, 0, 0.6);
   }
 }
 
-@keyframes splash-skipIn {
-  to {
+@keyframes splash-pulse {
+  0% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  100% {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
   }
 }
 

@@ -20,7 +20,7 @@ const getActiveDraftCount = () => {
     let count = 0
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i)
-      if (key && (key.startsWith('bore_barrel_draft_') || key.startsWith('recipe_draft_'))) {
+      if (key && (key.startsWith('score_draft_') || key.startsWith('gun_draft_') || key.startsWith('bore_barrel_draft_'))) {
         count++
       }
     }
@@ -36,7 +36,7 @@ const getActiveDraftCount = () => {
  */
 export default function ProfilePage({ onReplaySplash }) {
   const [profile, setProfile] = useState(() => userService.getUserProfile())
-  const [username, setUsername] = useState(profile.username || 'Shooter')
+  const [username, setUsername] = useState(profile.username || 'Musisi')
   const [bio, setBio] = useState(profile.bio || '')
   const [avatar, setAvatar] = useState(profile.avatar || null)
   const [copied, setCopied] = useState(false)
@@ -58,7 +58,7 @@ export default function ProfilePage({ onReplaySplash }) {
     if (!file) return
 
     if (file.size > 2 * 1024 * 1024) {
-      setFeedback('Avatar image must be under 2MB.')
+      setFeedback('Ukuran avatar harus di bawah 2MB.')
       setTimeout(() => setFeedback(''), 3000)
       return
     }
@@ -68,7 +68,7 @@ export default function ProfilePage({ onReplaySplash }) {
       const base64 = event.target.result
       setAvatar(base64)
       userService.updateAvatar(base64)
-      setFeedback('Avatar updated.')
+      setFeedback('Foto profil berhasil diperbarui.')
       setTimeout(() => setFeedback(''), 3000)
     }
     reader.readAsDataURL(file)
@@ -78,17 +78,17 @@ export default function ProfilePage({ onReplaySplash }) {
     e.preventDefault()
     const updated = {
       ...profile,
-      username: username.trim() || 'Shooter',
+      username: username.trim() || 'Musisi',
       bio: bio.trim(),
       avatar,
     }
     const result = userService.saveUserProfile(updated)
     if (result.success) {
       setProfile(result.data)
-      setFeedback('Profile successfully updated.')
+      setFeedback('Profil berhasil disimpan.')
       setTimeout(() => setFeedback(''), 3000)
     } else {
-      setFeedback('Failed to save profile.')
+      setFeedback('Gagal menyimpan profil.')
     }
   }
 
@@ -96,9 +96,9 @@ export default function ProfilePage({ onReplaySplash }) {
     <div className="profile-page">
       <section className="masthead" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h1 className="display">Operator Profile</h1>
+          <h1 className="display">Profil Musisi</h1>
           <p className="lede">
-            Operator credentials, procurement statistics, and armorer details.
+            Identitas musisi, statistik repertoar, dan preferensi akun perpustakaan partitur.
           </p>
         </div>
         {onReplaySplash && (
@@ -106,9 +106,9 @@ export default function ProfilePage({ onReplaySplash }) {
             type="button"
             className="btn btn--outline btn--sm"
             onClick={onReplaySplash}
-            title="Replay introductory splash animation"
+            title="Putar ulang animasi intro splash"
           >
-            <Play size={14} /> Replay Intro
+            <Play size={14} /> Putar Intro
           </button>
         )}
       </section>
@@ -175,11 +175,11 @@ export default function ProfilePage({ onReplaySplash }) {
 
       {/* Profile Form */}
       <form onSubmit={handleSaveProfile} className="profile-form">
-        <h3 className="section-title">Armorer Details</h3>
+        <h3 className="section-title">Detail Musisi</h3>
 
         <div className="form-group">
           <label htmlFor="prof-name" className="form-label">
-            Callsign / Operator Alias
+            Musisi Nama
           </label>
           <input
             id="prof-name"
@@ -193,7 +193,7 @@ export default function ProfilePage({ onReplaySplash }) {
 
         <div className="form-group">
           <label htmlFor="prof-bio" className="form-label">
-            Armory Notes / Station Bio
+            Musisi Bio
           </label>
           <textarea
             id="prof-bio"
@@ -206,7 +206,7 @@ export default function ProfilePage({ onReplaySplash }) {
         </div>
 
         <button type="submit" className="btn btn--primary">
-          <Save size={16} /> Save Armorer Profile
+          <Save size={16} /> Simpan Profil Musisi
         </button>
       </form>
     </div>

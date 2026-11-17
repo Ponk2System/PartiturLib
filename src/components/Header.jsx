@@ -1,12 +1,12 @@
-import { Plus } from 'lucide-react'
+import { Plus, Music } from 'lucide-react'
 import { useFavorites } from '../hooks/useFavorites'
 
 const NAV_ITEMS = [
-  { id: 'Catalog', label: 'Catalog' },
-  { id: 'Favorites', label: 'Favorites', hasBadge: true },
-  { id: 'Profile', label: 'Profile' },
-  { id: 'About', label: 'About' },
-  { id: 'Contact', label: 'Contact' },
+  { id: 'Catalog', label: 'Katalog' },
+  { id: 'Favorites', label: 'Repertoar', hasBadge: true },
+  { id: 'Profile', label: 'Profil' },
+  { id: 'About', label: 'Tentang' },
+  { id: 'Contact', label: 'Kontak' },
 ]
 
 function Header({ tab, onTab, onNavigateCreate }) {
@@ -15,11 +15,20 @@ function Header({ tab, onTab, onNavigateCreate }) {
 
   return (
     <header className="header">
-      <div className="header-brand-wrap" onClick={() => onTab('Catalog')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <div className="header-logo-badge">
-          <img src="/logo.png" alt="Bore & Barrel" />
+      <div
+        className="header-brand-wrap"
+        onClick={() => onTab('Catalog')}
+        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
+      >
+        <div
+          className="header-logo-badge"
+          style={{ backgroundColor: 'var(--brass)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Music size={20} color="#fff" />
         </div>
-        <span className="brand display">Bore &amp; Barrel</span>
+        <span className="brand display" style={{ letterSpacing: '0.04em' }}>
+          Partitur<span style={{ color: 'var(--brass)' }}>Lib</span>
+        </span>
       </div>
 
       <nav className="nav">
@@ -43,9 +52,9 @@ function Header({ tab, onTab, onNavigateCreate }) {
           type="button"
           className="btn btn--primary btn--sm header-cta"
           onClick={onNavigateCreate}
-          title="Register new hardware"
+          title="Unggah partitur baru"
         >
-          <Plus size={15} /> Add Hardware
+          <Plus size={15} /> Unggah Partitur
         </button>
       )}
     </header>
